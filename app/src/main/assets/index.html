@@ -77,7 +77,7 @@ input[type=file]{display:none}
 .ti-name{flex:1;overflow:hidden;text-overflow:ellipsis}
 .ti-del{opacity:0;color:var(--red);font-size:13px;padding:1px 4px;line-height:1;flex-shrink:0}
 .tree-item:hover .ti-del{opacity:.5}.ti-del:hover{opacity:1!important}
-.ti-ren{opacity:0;color:var(--accent);font-size:12px;padding:1px 4px;line-height:1;flex-shrink:0;cursor:pointer}
+.ti-ren{opacity:0;color:var(--accent);font-size:12px;padding:1px 4px;line-height:1;flex-shrink:0;cursor:pointer;display:flex;align-items:center}
 .tree-item:hover .ti-ren{opacity:.45}.ti-ren:hover{opacity:1!important}
 .proj-list{padding:10px 14px;display:flex;flex-direction:column;gap:8px}
 .proj-new-wrap{padding:0 14px 14px}
@@ -181,6 +181,8 @@ input[type=file]{display:none}
 .timer-bar.show{display:block}
 .dl-section{padding:12px 14px;display:none;flex-direction:column;gap:7px}.dl-section.show{display:flex}
 .btn-dl{width:100%;padding:14px;background:linear-gradient(135deg,#00ff88,#00cc60);border:none;border-radius:8px;color:#000;font-family:var(--ui);font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s}
+.btn-pages-build{width:100%;padding:13px 8px;border:none;border-radius:8px;background:linear-gradient(135deg,#059669,#00ff88);color:#000;font-family:var(--ui);font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;box-shadow:0 3px 14px #00ff8822}
+.btn-pages-build:active{transform:scale(.97)}.btn-pages-build:disabled{opacity:.5;cursor:not-allowed}
 .btn-dl:disabled{background:#1a2332;color:var(--dim);cursor:not-allowed}
 .btn-gh{display:block;width:100%;padding:11px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--ui);font-size:12px;font-weight:600;text-align:center;text-decoration:none}
 .wip-badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:8px;background:#ff8c0012;border:1px solid #ff8c0030;color:var(--orange);margin-left:auto}
@@ -294,6 +296,20 @@ input[type=file]{display:none}
   </div>
  </div>
  <div class="sec">
+  <div class="st">Реклама</div>
+  <div class="toggle-row">
+   <span class="toggle-label">Яндекс Баннер (нативный SDK)<small>Показывается внизу экрана при наличии сети</small></span>
+   <label class="toggle"><input type="checkbox" id="adsEnabled" onchange="document.getElementById('adFields').classList.toggle('show',this.checked)"><span class="toggle-slider"></span></label>
+  </div>
+  <div class="ad-fields" id="adFields">
+   <div class="field">
+    <span class="fl">ID рекламного блока</span>
+    <input type="text" id="adBlockId" placeholder="R-M-XXXXXXX-X">
+   </div>
+   <p style="font-size:10px;color:var(--dim);font-family:var(--mono);line-height:1.6;margin-top:5px"> Баннер 320×50 внизу. Офлайн режим не нарушается — без сети баннер просто не показывается.</p>
+  </div>
+ </div>
+ <div class="sec">
   <div class="st">Min Android</div>
   <select id="minSdk">
    <option value="21">API 21 — Android 5.0+</option>
@@ -373,6 +389,16 @@ input[type=file]{display:none}
   <button class="btn-build btn-debug" id="btnBuildDebug" onclick="startBuild('debug')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M20 12h2M2 12h2M12 2v2M12 20v2M17 7l1.5-1.5M5 19l1.5-1.5M17 17l1.5 1.5M5 5l1.5 1.5"/></svg>Debug APK</button>
   <button class="btn-build btn-release" id="btnBuildRelease" onclick="startBuild('release')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Release APK</button>
  </div>
+ <div style="padding:0 14px 10px">
+  <button class="btn-build btn-pages-build" id="btnPages" onclick="createGitHubPages()">
+   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+   Опубликовать на GitHub Pages
+  </button>
+  <div class="pages-result" id="pagesResult">
+   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+   <span id="pagesUrl"></span>
+  </div>
+ </div>
  <div class="steps-list">
   <div class="step" id="s0"><div class="step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="step-name">Генерация файлов</div><div class="step-sub" id="s0s">HTML, Java, Gradle...</div></div></div>
   <div class="step" id="s1"><div class="step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></div><div><div class="step-name">Проверка токена</div><div class="step-sub" id="s1s">Авторизация...</div></div></div>
@@ -440,7 +466,7 @@ function renderTree(){
   div.style.paddingLeft=(8+depth*13)+'px';
   div.innerHTML='<span style="flex-shrink:0;margin-right:2px">'+(dir?folderSvg():fileColorSvg(name))+'</span><span class="ti-name">'+esc(name)+'</span>';
   if(!dir){
-   var ren=document.createElement('span');ren.className='ti-ren';ren.innerHTML='';
+   var ren=document.createElement('span');ren.className='ti-ren';ren.title='Переименовать';ren.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
    (function(pp){ren.onclick=function(e){e.stopPropagation();renameFileDialog(pp);};})(p);
    var del=document.createElement('span');del.className='ti-del';del.innerHTML='&times;';
    (function(pp){del.onclick=function(e){e.stopPropagation();if(vfs.length<=1){toast('Нельзя удалить последний файл','warn');return;}vfsDel(pp);if(currentFile===pp)showNoFile();};})(p);
@@ -541,7 +567,7 @@ function generateSplash(name){return'<!DOCTYPE html><html><head><meta charset="U
 
 /* PROJECT FILES */
 async function buildProjectFiles(opts){
- var appName=opts.appName,pkg=opts.pkg,pkgPath=opts.pkgPath,verName=opts.verName,verCode=opts.verCode,orient=opts.orient,fullscreen=opts.fullscreen,minSdk=opts.minSdk,icons=opts.icons;
+ var appName=opts.appName,pkg=opts.pkg,pkgPath=opts.pkgPath,verName=opts.verName,verCode=opts.verCode,orient=opts.orient,fullscreen=opts.fullscreen,minSdk=opts.minSdk,icons=opts.icons,adBlockId=opts.adBlockId||'';
  var files=[];
  function t(p,s){files.push({path:p,b64:tb64(s)});}
  function b(p,b64){files.push({path:p,b64:b64});}
@@ -565,7 +591,21 @@ async function buildProjectFiles(opts){
 '  @Override protected void onCreate(Bundle s) {\n'+
 '    super.onCreate(s);\n'+
 (fullscreen?'    requestWindowFeature(Window.FEATURE_NO_TITLE);\n    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);\n':'')+
-'    wv=new WebView(this); setContentView(wv);\n'+
+'    wv=new WebView(this);'+
+(adBlockId?
+'\\n    android.widget.LinearLayout _layout=new android.widget.LinearLayout(this);\\n'+
+'    _layout.setOrientation(android.widget.LinearLayout.VERTICAL);\\n'+
+'    android.widget.LinearLayout.LayoutParams _wvP=new android.widget.LinearLayout.LayoutParams(-1,0,1f);\\n'+
+'    _layout.addView(wv,_wvP);\\n'+
+'    com.yandex.mobile.ads.banner.BannerAdView _adView=new com.yandex.mobile.ads.banner.BannerAdView(this);\\n'+
+'    _adView.setAdUnitId("'+adBlockId+'");\\n'+
+'    _adView.setAdSize(com.yandex.mobile.ads.banner.BannerAdSize.fixedSize(this,320,50));\\n'+
+'    android.widget.LinearLayout.LayoutParams _adP=new android.widget.LinearLayout.LayoutParams(-1,-2);\\n'+
+'    _layout.addView(_adView,_adP);\\n'+
+'    com.yandex.mobile.ads.common.MobileAds.initialize(this,null);\\n'+
+'    _adView.loadAd(new com.yandex.mobile.ads.common.AdRequest.Builder().build());\\n'+
+'    setContentView(_layout);\\n':
+' setContentView(wv);\\n')+
 (fullscreen?'    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|View.SYSTEM_UI_FLAG_FULLSCREEN|View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);\n':'')+
 '    requestRuntimePerms();\n'+
 '    WebSettings ws=wv.getSettings();\n'+
@@ -670,8 +710,7 @@ async function buildProjectFiles(opts){
 '        <category android:name="android.intent.category.LAUNCHER"/>\n'+
 '      </intent-filter>\n'+
 '    </activity>\n'+
-'  </application>\n'+
-'</manifest>');
+'  </application>\n'+(adBlockId?'  <!-- Yandex Mobile Ads -->\n':'')+'</manifest>');
 
  ['ldpi','mdpi','hdpi','xhdpi','xxhdpi','xxxhdpi'].forEach(function(dpi){if(icons[dpi])b('app/src/main/res/mipmap-'+dpi+'/ic_launcher.png',icons[dpi]);});
  t('app/src/main/res/values/strings.xml','<?xml version="1.0" encoding="utf-8"?><resources><string name="app_name">'+appName+'</string></resources>');
@@ -710,9 +749,9 @@ async function buildProjectFiles(opts){
 '    targetCompatibility JavaVersion.VERSION_1_8\n'+
 '  }\n'+
 '}\n'+
-'dependencies {}\n');
+'dependencies {'+(adBlockId?'\\n  implementation \'com.yandex.android:mobileads:7.10.0\'':'')+'}\\n');
 
- t('build.gradle','buildscript {\n  repositories { google(); mavenCentral() }\n  dependencies { classpath \'com.android.tools.build:gradle:7.4.2\' }\n}\nallprojects {\n  repositories { google(); mavenCentral() }\n}\n');
+ t('build.gradle','buildscript {\n  repositories { google(); mavenCentral() }\n  dependencies { classpath \'com.android.tools.build:gradle:7.4.2\' }\n}\nallprojects {\n  repositories { google(); mavenCentral()'+(adBlockId?'; maven { url \'https://artifactory.yandex.net/artifactory/yandex_mobile_ads_android_dev/\' }':'')+' }\n}\n');
  t('settings.gradle','rootProject.name = "'+appName+'"\ninclude \':app\'\n');
  t('app/proguard-rules.pro','# ProGuard\n');
  t('gradle/wrapper/gradle-wrapper.properties','distributionBase=GRADLE_USER_HOME\ndistributionPath=wrapper/dists\ndistributionUrl=https\\://services.gradle.org/distributions/gradle-7.6.4-bin.zip\nzipStoreBase=GRADLE_USER_HOME\nzipStorePath=wrapper/dists\n');
@@ -808,6 +847,8 @@ async function startBuild(mode){
  var orient=document.querySelector('#orientPills .pill.active').dataset.val;
  var fullscreen=document.querySelector('#displayPills .pill.active').dataset.val==='fullscreen';
  var minSdk=document.getElementById('minSdk').value;
+ var adsEnabled=document.getElementById('adsEnabled').checked;
+ var adBlockId=adsEnabled?(document.getElementById('adBlockId').value.trim()||''):'';
  var pkgPath=pkg.replace(/\./g,'/');
  var isRelease=mode==='release';
  var btnD=document.getElementById(isRelease?'btnBuildRelease':'btnBuildDebug');
@@ -819,7 +860,7 @@ async function startBuild(mode){
  try{
   stepSet('s0','active','Генерация...');
   var icons=await genIcons(iconB64||genDefaultIcon(512));
-  var files=await buildProjectFiles({appName:appName,pkg:pkg,pkgPath:pkgPath,verName:verName,verCode:verCode,orient:orient,fullscreen:fullscreen,minSdk:minSdk,icons:icons});
+  var files=await buildProjectFiles({appName:appName,pkg:pkg,pkgPath:pkgPath,verName:verName,verCode:verCode,orient:orient,fullscreen:fullscreen,minSdk:minSdk,icons:icons,adBlockId:adBlockId});
   stepSet('s0','done',files.length+' файлов');
 
   stepSet('s1','active','Авторизация...');
@@ -943,6 +984,102 @@ function renameProjectDialog(id){var proj=projects.find(function(p){return p.id=
 function renderProjects(){var list=document.getElementById('projectsList');if(!list)return;list.innerHTML='';projects.forEach(function(proj){var isActive=proj.id===activeProjectId,fc=proj.vfs?proj.vfs.length:0;var card=document.createElement('div');card.className='proj-card'+(isActive?' active':'');card.innerHTML='<div class="proj-info"><div class="proj-name">'+esc(proj.name)+'</div><div class="proj-meta">'+fc+' файл'+(fc===1?'':fc<5?'а':'ов')+(isActive?' · активный':'')+'</div></div><div class="proj-btns"><button class="proj-btn'+(isActive?' accent':'')+'" onclick="switchProject(\''+proj.id+'\')">Открыть</button><button class="proj-btn ren" onclick="renameProjectDialog(\''+proj.id+'\')"></button><button class="proj-btn del" onclick="deleteProject(\''+proj.id+'\')" '+(projects.length<=1?'disabled':'')+'>×</button></div>';list.appendChild(card);});}
 function initProjects(){vfsSet('index.html',DEMO);projects=[{id:'p1',name:'Кликер',vfs:JSON.parse(JSON.stringify(vfs)),currentFile:null}];activeProjectId='p1';renderProjects();}
 
+/* GITHUB PAGES */
+async function createGitHubPages(){
+ var token=document.getElementById('ghToken').value.trim();
+ if(!token){toast('Сначала сохрани токен на вкладке GitHub','warn');return;}
+ // Save current file state
+ if(currentFile&&cm){var cf=vfsGet(currentFile);if(cf&&!cf.binary)cf.content=cm.getValue();}
+ saveProjectState();
+
+ // Get app name for repo name
+ var appName=document.getElementById('appName').value.trim()||'my-app';
+ var repoName=appName.toLowerCase().replace(/[^a-z0-9-]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+ if(!repoName)repoName='my-app';
+
+ var btn=document.getElementById('btnPages');
+ btn.disabled=true;btn.innerHTML='<span class="spin spin-dark"></span> Создаю...';
+ try{
+  // Get user info
+  var me=await ghFetch('/user','GET',token);
+  var user=me.login;
+  var fullRepo=user+'/'+repoName;
+
+  // Create repo if not exists
+  var repoExists=false;
+  try{await ghFetch('/repos/'+fullRepo,'GET',token);repoExists=true;}catch(e){repoExists=false;}
+  if(!repoExists){
+   await ghFetch('/user/repos','POST',token,{
+    name:repoName,
+    description:appName+' — powered by APK Builder',
+    private:false,
+    auto_init:false
+   });
+   await new Promise(function(r){setTimeout(r,1500);});
+  }
+
+  // Build tree from VFS (all project files)
+  var proj=getActiveProject();
+  var projVfs=proj?proj.vfs:vfs;
+  var treeItems=[];
+  for(var i=0;i<projVfs.length;i++){
+   var f=projVfs[i];
+   var blobData;
+   if(f.binary){
+    blobData={content:f.content,encoding:'base64'};
+   } else {
+    blobData={content:f.content||'',encoding:'utf-8'};
+   }
+   var blob=await ghFetch('/repos/'+fullRepo+'/git/blobs','POST',token,blobData);
+   treeItems.push({path:f.path,mode:'100644',type:'blob',sha:blob.sha});
+  }
+
+  // Check if main branch exists
+  var hasMain=true;
+  var baseSha=null;
+  try{
+   var ref=await ghFetch('/repos/'+fullRepo+'/git/ref/heads/main','GET',token);
+   var curCommit=await ghFetch('/repos/'+fullRepo+'/git/commits/'+ref.object.sha,'GET',token);
+   baseSha=curCommit.tree.sha;
+  }catch(e){hasMain=false;}
+
+  // Create tree
+  var treePayload={tree:treeItems};
+  if(baseSha)treePayload.base_tree=baseSha;
+  var tree=await ghFetch('/repos/'+fullRepo+'/git/trees','POST',token,treePayload);
+
+  // Create commit
+  var commitPayload={message:'Deploy via APK Builder',tree:tree.sha,parents:hasMain&&baseSha?[ref.object.sha]:[]};
+  var commit=await ghFetch('/repos/'+fullRepo+'/git/commits','POST',token,commitPayload);
+
+  // Update or create ref
+  if(hasMain){
+   await ghFetch('/repos/'+fullRepo+'/git/refs/heads/main','PATCH',token,{sha:commit.sha,force:true});
+  } else {
+   await ghFetch('/repos/'+fullRepo+'/git/refs','POST',token,{ref:'refs/heads/main',sha:commit.sha});
+  }
+
+  // Enable GitHub Pages (may already be enabled)
+  try{
+   await fetch('https://api.github.com/repos/'+fullRepo+'/pages',{
+    method:'POST',
+    headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+    body:JSON.stringify({source:{branch:'main',path:'/'}})
+   });
+  }catch(ignore){}
+
+  var pagesUrl='https://'+user+'.github.io/'+repoName+'/';
+  document.getElementById('pagesUrl').textContent=pagesUrl;
+  document.getElementById('pagesResult').classList.add('show');
+  document.getElementById('pagesResult').onclick=function(){window.open(pagesUrl,'_blank');};
+  document.getElementById('pagesResult').style.cursor='pointer';
+  document.getElementById('pagesResult').title='Открыть сайт (может занять 1-2 мин)';
+  toast('Задеплоено! '+pagesUrl,'ok');
+ }catch(err){
+  toast('Ошибка: '+err.message,'err');
+ }
+ btn.disabled=false;btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="2" y1="12" x2="22" y2="12"/></svg> Создать домен автоматически';
+}
 renderTree();
 initProjects();
 </script>
