@@ -3,14 +3,26 @@ android {
   compileSdkVersion 33
   buildToolsVersion "33.0.2"
   defaultConfig {
-    applicationId "com.example.myapp"
+    applicationId "com.exple.mpp"
     minSdkVersion 23
     targetSdkVersion 33
     versionCode 1
     versionName "1.0.0"
   }
+  signingConfigs {
+    release {
+      storeFile file('release.jks')
+      storePassword 'apkbuilder123'
+      keyAlias 'apkbuilder'
+      keyPassword 'apkbuilder123'
+    }
+  }
   buildTypes {
     debug { debuggable true }
+    release {
+      signingConfig signingConfigs.release
+      minifyEnabled false
+    }
   }
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8

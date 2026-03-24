@@ -1,6 +1,11 @@
 name: Build APK
 on:
   workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'debug or release'
+        required: true
+        default: 'debug'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,12 +24,28 @@ jobs:
         run: |
           mkdir -p gradle/wrapper
           curl -fsSL https://raw.githubusercontent.com/gradle/gradle/v7.6.4/gradle/wrapper/gradle-wrapper.jar -o gradle/wrapper/gradle-wrapper.jar
-      - name: Build Debug APK
+      - name: Generate keystore
+        if: ${{ github.event.inputs.build_type == 'release' }}
+        run: |
+          keytool -genkeypair -v \
+            -keystore release.jks \
+            -alias apkbuilder \
+            -keyalg RSA -keysize 2048 \
+            -validity 365 \
+            -storepass apkbuilder123 \
+            -keypass apkbuilder123 \
+            -dname "CN=APKBuilder,OU=Auto,O=Auto,L=City,S=State,C=US"
+          cp release.jks app/release.jks
+      - name: Build APK
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
+          if [ "${{ github.event.inputs.build_type }}" = "release" ]; then
+            ./gradlew assembleRelease --stacktrace
+          else
+            ./gradlew assembleDebug --stacktrace
+          fi
       - uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: app/build/outputs/apk/debug/*.apk
+          name: app-${{ github.event.inputs.build_type }}
+          path: app/build/outputs/apk/${{ github.event.inputs.build_type }}/*.apk
           retention-days: 7
