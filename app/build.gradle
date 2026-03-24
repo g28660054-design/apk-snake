@@ -3,7 +3,7 @@ android {
   compileSdkVersion 33
   buildToolsVersion "33.0.2"
   defaultConfig {
-    applicationId "com.builder.apk"
+    applicationId "com.example.myapp"
     minSdkVersion 23
     targetSdkVersion 33
     versionCode 1
@@ -29,4 +29,4 @@ android {
     targetCompatibility JavaVersion.VERSION_1_8
   }
 }
-dependencies {}\n
+dependencies {}
